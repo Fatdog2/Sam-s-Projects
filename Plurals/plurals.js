@@ -1,6 +1,7 @@
 const input = document.getElementById('input');
 const output = document.getElementById('output');
 
+//This is the process Item function
 function processItem(qty, singular) {
   if (qty < 1000) {
     if (qty === 0) {
@@ -11,6 +12,7 @@ function processItem(qty, singular) {
       return 'one' + ' ' + makePlural(singular);
     } else {
       //console.log(makePlural(singular));
+      return qty + ' ' + makePlural(singular);
     }
   }
 }
