@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <! linking the CSS and the JS >
+        <link rel="stylesheet" href="nhlUI.css">
+        <script src="nhlMain.js"></script>
+
+  
+
+    </head>
+    <body>
+        <h1 id="TITLE">
+            NHL Game Predictor
+        </h1>
+        <! Setting the NHL Logos on either side up >
+        <img class="img1" src="https://i.imgur.com/pgsiMdx.jpg" width="150" height="150"  alt="NHL LOGO">
+        <img class="img2" src="https://i.imgur.com/pgsiMdx.jpg" width="150" height="150"  alt="NHL LOGO">
+
+        <! Setting the Team Logos on either side up >
+        <img id="team1IMG" hidden class="imgT1" src="" width="200" height="200"  alt="Team 1 Image">
+        <img id="team2IMG" hidden class="imgT2" src="" width="200" height="200"  alt="Team 2 Image">
+
+        <! Setting the Drop Down boxes on either side up >   
+        <select class= "teamSelect1" onchange="dropDownChange1()" id="teamSelect1">
+        </select>
+        <select class= "teamSelect2" onchange="dropDownChange2()" id="teamSelect2">      
+            </select>
+            <! Setting up button >    
+            <button class="button1" onclick="predict()">Predict</button>
+            <! Setting up the text for underneath the first select box, it 
+                initialises with the "Please Select" Text >
+        <div class="output1" id="output1">Please Select Team 1</div>
+        <! Setting up the text for undernearth the second select box,
+            have used a span here unlike the first one, so I can reposition
+            the text independently in the CSS  >
+        <div class="output2" id="output2"><span class= "pleaseSelect2" > Please Select Team 2 </span>'</div>
+        
+  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </body>
+</html>

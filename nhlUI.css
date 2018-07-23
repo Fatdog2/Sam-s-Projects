@@ -1,0 +1,176 @@
+/* Setting up the title */
+h1 {
+    text-align: center;
+    font-family: "Courier New", Courier, monospace
+}
+
+/* Positioning the NHL logo on the left */
+img.img1 {
+    position: fixed;
+    left:1%;    
+    top: 2%;
+    width: 10rem;
+    height: 10rem;
+}
+/*Positioning the NHL logo on the right */
+img.img2 {
+    position: fixed;
+    right: 1%;
+    top: 2%;
+    width: 10rem;
+    height: 10rem;
+}
+/* Positioning the Image for Team 1 */
+img.imgT1 {
+    position: fixed;
+    left: 20%;
+    top: 10%;
+    width: 12rem;
+    height: 12rem;
+}
+/* Positioning the Image for Team 2  */
+img.imgT2 {
+    position: fixed;
+    right: 20%;
+    top: 10%;
+    width: 12rem;
+    height: 12rem;
+}
+
+
+/* Making the Static select box css, when the mouse is not hovered over. I have
+implemented an actual picture which is the arrow. This was made in illustrator then
+converted to png and put in the drop down box*/
+select.teamSelect1 {
+    position: fixed;
+    left: 20%;
+    top: 40%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 10px 40px 10px 10px;
+    border-radius: 30px;
+    border-width: 3px;
+    border-color: black;
+    background: url(/Images/actual\ drop\ down.png) no-repeat 90%;
+    background-size: 15%;
+
+}
+/* Inverting the colours of the drop down box as well as inverting the picture, whilst the
+mouse is hovered over the top */
+select.teamSelect1:hover {
+    border-color: grey;
+    color: white;
+    background: black url(/Images/inverse\ drop\ down.png) no-repeat 90%;
+    background-size: 15%;
+
+
+}
+/* This is bug fixing, because chrome put ugly blue outlines when you clicked on things */
+select.teamSelect1:focus {
+    outline: 0;
+
+}
+/* This is bug fixing, because chrome put ugly blue outlines when you clicked on things */
+select.teamSelect2:focus {
+    outline: 0;
+
+}
+/* The same thing I did for the first drop down box hovering, but just for team 2 */
+select.teamSelect2:hover {
+    border-color: grey;
+    color: white;
+    background: black url(/Images/inverse\ drop\ down.png) no-repeat 90%;
+    background-size: 15%;
+
+}
+/* The same thing I did for the first dropdown box, just for the second one  */
+select.teamSelect2 {
+    position: fixed;
+    right: 20%;
+    top: 40%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 10px 40px 10px 10px;
+    border-radius: 30px;
+    border-width: 3px;
+    border-color: black;
+    background: url(/Images/actual\ drop\ down.png) no-repeat 90%;
+    background-size: 15%;
+
+
+}   
+/* Formating the output of Team 1 */
+div.output1 {
+    position: fixed;
+    left: 20%;
+    top: 50%;
+    font-family: "Comic Sans", Courier, monospace;
+}
+/* Formating the output of Team 2 */
+div.output2 {
+    position: fixed;
+    right: 12%;
+    top: 50%;
+    font-family: "Comic Sans", Courier, monospace;
+
+}
+
+/* Formatting the button  */
+button.button1 {
+    position: fixed;
+    left: 45%;
+    top: 40%;
+    background:    #666666;
+    background:    -webkit-linear-gradient(#666666, #000000);
+    background:    linear-gradient(#666666, #000000);
+    border:        1px solid #000000;
+    border-radius: 12px;
+    padding:       8px 14px;
+    color:         #ffffff;
+    display:       inline-block;
+    font:          normal 400 24px/1 "Ubuntu", sans-serif;
+    text-align:    center;
+    text-shadow:   none;
+}
+button.button1:hover {
+    background:    #666666;
+    background:    -webkit-linear-gradient (lightgray, #000000);
+    background:    linear-gradient(lightgray);
+    border:        1px solid #000000;
+    border-radius: 12px;
+    padding:       8px 14px;
+    color:         #ffffff;
+    display:       inline-block;
+    font:          normal 400 24px/1 "Ubuntu", sans-serif;
+    text-align:    center;
+    text-shadow:   none;
+}
+button.button1:focus {
+    outline:0;
+}
+/* this is some bug fixing for the text that is displayed when no team is selected */
+.pleaseSelect2 {
+    position: fixed;
+    right: 19%;
+    top: 50%;
+    font-family: Courier;
+}
+
+/* formatting the labels of stats preview */
+.output1LABELS {
+
+    font-weight: bold;
+    font-family: Courier;
+
+}
+/* formatting the labels of stats preview */
+.output2LABELS {
+
+    font-weight: bold;
+    font-family: Courier;
+
+}
+
+ 
+  
+ 
