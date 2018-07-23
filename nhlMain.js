@@ -75,6 +75,8 @@ let team2NAME = "";
 let team1RANKS = [];
 let team2RANKS = [];
 
+let team1SCORE = 0;
+let team2SCORE = 0;
 //calling the getTeams function so you don't have to wait for a dropdown box to be clicked for the options to load into the select boxes
 getTeams();
 
@@ -218,6 +220,46 @@ function dropDownChange2() {
 
 }
 
+/* Declaring a function so we can easily call this function continiously, feeding various
+fields and weights into it. */
+function compare(team1FIELD,team2FIELD,weight) {
+
+    /* addScore is what we will add to either compare score a.k.a the weighted difference 
+    between the two variables */
+    let addScore = 0;
+
+    /* here we are setting addScore to the absolute difference between the fields
+    multiplied by the weighting I have chosen  */
+    addScore = Math.abs((team1FIELD - team2FIELD)*weight)
+
+    console.log(addScore + " This is the addScore");
+
+    
+    if (team1FIELD === team2FIELD) {
+    //do nothing
+    }
+    else {
+
+        if (team1FIELD > team2FIELD) {
+           team1SCORE = team1SCORE + addScore;
+        }
+        else {
+            team1SCORE = team1SCORE + addScore;
+        }
+}
+
+
+}
+function compareRANK(team1FIELD, team2FIELD,weight) {
+    let extract1 = 0;
+    let extract2 = 0;
+    let rankWeight = weight*10;
+    extract1 = Number(team1FIELD.slice(0,-2));
+    console.log(extract1);
+    extract2 = Number(team2FIELD.slice(0,-2));
+    console.log(extract2)
+    compare(extract1,extract2,rankWeight);
+}
 function predict() {
     //Assigning t1 and t2 which are the values of the select boxes, this is so we can do some
     // data validation
@@ -232,20 +274,23 @@ function predict() {
 
     //Here is where the real "Predicting" is about to take place
     else {
-    let team1SCORE = 0;
-    let team2SCORE = 0;
+        team1SCORE = 0;
+        team2SCORE = 0;
     
 
     console.log(team1NAME);
     console.log(team2NAME);
 
+    compare(team1STATS.wins,team2STATS.wins,fieldWeights.wins);
+    compareRANK(team1RANKS.wins,team2RANKS.wins,fieldWeights.winsRank);
 
-  
 
-   /* if (team1SCORE > team2SCORE) {
-        console.log("Team 1 will beat Team 2")
-    }
-*/
+    console.log(team1SCORE + " This is Team 1 Score");
+    console.log(team2SCORE + " This is Team 2 Score");
+
+
+
+
     }
 
 }
