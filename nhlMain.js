@@ -222,7 +222,11 @@ function dropDownChange2() {
 
 /* Declaring a function so we can easily call this function continiously, feeding various
 fields and weights into it. */
-function compare(team1FIELD,team2FIELD,weight) {
+function compare(field) {
+
+    let team1FIELD = team1STATS[field];
+    let team2FIELD = team2STATS[field];
+    let weight = fieldWeights[field];
 
     /* addScore is what we will add to either compare score a.k.a the weighted difference 
     between the two variables */
@@ -232,7 +236,7 @@ function compare(team1FIELD,team2FIELD,weight) {
     multiplied by the weighting I have chosen  */
     addScore = Math.abs((team1FIELD - team2FIELD)*weight)
 
-    console.log(addScore + " This is the addScore");
+    //console.log(addScore + " This is the addScore");
 
     
     if (team1FIELD === team2FIELD) {
@@ -244,21 +248,43 @@ function compare(team1FIELD,team2FIELD,weight) {
            team1SCORE = team1SCORE + addScore;
         }
         else {
-            team1SCORE = team1SCORE + addScore;
+            team2SCORE = team2SCORE + addScore;
         }
 }
 
 
 }
-function compareRANK(team1FIELD, team2FIELD,weight) {
+function compareRANK(field) {
+    let team1FIELD = team1RANKS[field];
+    let team2FIELD = team2RANKS[field];
+    let weight = fieldWeights[field + "Rank"]*20;
     let extract1 = 0;
     let extract2 = 0;
-    let rankWeight = weight*10;
+    
+    //EXTRACTING//
     extract1 = Number(team1FIELD.slice(0,-2));
-    console.log(extract1);
+    // console.log(extract1);
     extract2 = Number(team2FIELD.slice(0,-2));
-    console.log(extract2)
-    compare(extract1,extract2,rankWeight);
+    // console.log(extract2);
+    //EXTRACTING// 
+
+    let addScore = 0;
+    addScore = Math.abs((extract1 - extract2)*weight)
+    if (extract1 === extract2) {
+        //do nothing
+        }
+        else {
+    
+            if (extract1 > extract2) {
+               team1SCORE = team1SCORE + addScore;
+            }
+            else {
+                team2SCORE = team2SCORE + addScore;
+            }
+    }
+
+
+    
 }
 function predict() {
     //Assigning t1 and t2 which are the values of the select boxes, this is so we can do some
@@ -281,16 +307,37 @@ function predict() {
     console.log(team1NAME);
     console.log(team2NAME);
 
-    compare(team1STATS.wins,team2STATS.wins,fieldWeights.wins);
-    compareRANK(team1RANKS.wins,team2RANKS.wins,fieldWeights.winsRank);
+    // compare(team1STATS.wins,team2STATS.wins,fieldWeights.wins);
+    //compare('wins');
+    // compareRANK('wins');
+
+    for (let stat in fieldWeights) {
+        console.log(stat);
+        compare(stat);
+    }
+
+console.log(team1SCORE)
+console.log(team2SCORE)
+
+let totalSCORE = 0;
+totalSCORE =  team1SCORE + team2SCORE;
+
+    let team1WP = 0;
+    team1WP = ((team1SCORE/totalSCORE)*100)
+    console.log(team1WP);
+    output1.innerHTML = '<span id= "team1WPtext" class= "team1WP"> <span>'
+    team1WPtext.innerHTML = team1WP;
 
 
-    console.log(team1SCORE + " This is Team 1 Score");
-    console.log(team2SCORE + " This is Team 2 Score");
+    let team2WP = 0;
+    team2WP = ((team2SCORE/totalSCORE)*100)
+    console.log("Team 2 Win");
+    console.log(team2WP);
+    output2.innerHTML = '<span id= "team2WPtext" class= "team1WP"> <span>'
+    team2WPtext.innerHTML = team2WP;
 
-
-
-
+console.log(team1SCORE)
+console.log(team2SCORE)
     }
 
 }
