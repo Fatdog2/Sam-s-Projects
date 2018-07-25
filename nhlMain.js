@@ -1,18 +1,23 @@
 //intialising the teams array
 let teams = [];
 
+//Initialising team id's as globals, we do this here because we need to use the team id's in
+// other functions
+let teamid1 = 0;
+let teamid2 = 0;
+
 //Here are my own personal weighting for each field, supposedly how much I think they mean
 // towards for example, wins should weigh more than power play goals agiasnt. 
 //I have taken alot of thought into these weighting however, in the near future I might like
 // to enable the user to edit the weightings of the variables just for personal preference
 let fieldWeights = {
 
-     wins: 8,
-     winsRank: 10,
-     losses: 8,
-     lossesRank: 10,
-     overtime: 6,
-     overtimeRank: 8,
+     wins: 25,
+     winsRank: 30,
+     losses: 20,
+     lossesRank: 25,
+     ot: 6,
+     otRank: 8,
      pts: 8,
      ptsRank: 10,
      goalsPerGame: 5,
@@ -53,9 +58,9 @@ let fieldWeights = {
      winOutshotByOppRank:	4,
      faceOffWinPercentage: 3,
      faceOffWinPercentageRank: 3,	
-     savePct:	4.5,
+     savePctg:	4.5,
      savePctRank:	5,
-     shootingPctRank: 4.5,
+     shootingPct: 4.5,
      shootingPctRank: 5,
      
 }
@@ -68,7 +73,8 @@ let fieldWeights = {
 let team1STATS = [];
 let team2STATS = [];
 
-
+//Setting up some more globals that we need to use in different functions (therefore requring
+//  making them globals)
 let team1NAME = "";
 let team2NAME = "";
 
@@ -77,6 +83,7 @@ let team2RANKS = [];
 
 let team1SCORE = 0;
 let team2SCORE = 0;
+
 //calling the getTeams function so you don't have to wait for a dropdown box to be clicked for the options to load into the select boxes
 getTeams();
 
@@ -128,19 +135,19 @@ function getTeams() {
 function dropDownChange1() {
 
 //x here is the value that is in team select select list, in mine it corresponds to team id so we can use it here to find mutiple things, such as API request and picture. 
-    let x = document.getElementById("teamSelect1").value;
+    teamid1 = document.getElementById("teamSelect1").value;
     //Checking if the value is actually a number (so I know whether someone has actually chosen a team)
-    if (!isNaN(x))
+    if (!isNaN(teamid1))
     {
         //Changing the picture to the according team, as well as setting up output
         output1.innerHTML = "";
-        team1IMG.src = "/Images/" + x + ".png";
+        team1IMG.src = "/Images/" + teamid1 + ".png";
         team1IMG.hidden = false;
         
 
         //Making the request to the API
         let xhttp = new XMLHttpRequest();
-        xhttp.open("GET","https://statsapi.web.nhl.com/api/v1/teams/" + x + "/stats", true);
+        xhttp.open("GET","https://statsapi.web.nhl.com/api/v1/teams/" + teamid1 + "/stats", true);
         xhttp.send();
 
         //When the API responds with the data
@@ -157,7 +164,7 @@ function dropDownChange1() {
             //Parsing into a ranks object, for use later on in our predict function
             team1RANKS = JSON.parse(this.responseText).stats[1].splits[0].stat;
 
-            //Getting stats for the team according to the data just read from the API - LIVE STATS :D
+            //Getting stats for the team according to the data just read from the API - LIVE STATS
             //I have chosen do use "<span>" here because I wanted to edit the labels seperatedly in CSS
             output1.innerHTML += '<span class="output1LABELS"> Games Played: </span>' +
              team1STATS.gamesPlayed + "<br>" + '<span class="output1LABELS">Wins: </span>' + 
@@ -176,20 +183,20 @@ function dropDownChange1() {
         team1IMG.hidden = true;
         
     }
-  
 
 }
+
 //Here we repeat the same process of events that occured in our dropDownChange1
 function dropDownChange2() {
-    let y = document.getElementById("teamSelect2").value;
-    if (!isNaN(y))
+    teamid2 = document.getElementById("teamSelect2").value;
+    if (!isNaN(teamid2))
     {
-       output2.innerHTML = "Team ID: " + y;
-        team2IMG.src = "/Images/" + y + ".png";
+       output2.innerHTML = "Team ID: " + teamid2;
+        team2IMG.src = "/Images/" + teamid2 + ".png";
         team2IMG.hidden = false;
         output2.innerHTML = "";
         let xhttp = new XMLHttpRequest();
-        xhttp.open("GET","https://statsapi.web.nhl.com/api/v1/teams/" + y + "/stats", true);
+        xhttp.open("GET","https://statsapi.web.nhl.com/api/v1/teams/" + teamid2 + "/stats", true);
         xhttp.send();
         xhttp.onreadystatechange = function() {
             if(this.readyState == XMLHttpRequest.DONE && this.status == 200) {
@@ -209,73 +216,105 @@ function dropDownChange2() {
     }
     else {
         output2.innerHTML = ' <span class= "pleaseSelect2" > Please Select Team 2 </span>';
-        //Using span here was just a bugfix because the pleaseSelect2 text wasn't properly aligned but the div was fine when it was showing stat text
-        //So by using span just when I have Please Select Team 2 it lets me position this element individually in css
+        //Using span here was just a bugfix because the pleaseSelect2 text wasn't properly aligned but the div was fine when it was showing the stat text
+        //So by using span just when I have Please Select Team 2 it lets me position this element individually in CSS
 
 
         team2IMG.hidden = true;
     }
-   
-    
+
 
 }
+
+//Setting addScore as a global here, because we request it in other functions
+let addScore = 0
 
 /* Declaring a function so we can easily call this function continiously, feeding various
 fields and weights into it. */
 function compare(field) {
 
+    /*
+    
+     */
     let team1FIELD = team1STATS[field];
     let team2FIELD = team2STATS[field];
     let weight = fieldWeights[field];
 
     /* addScore is what we will add to either compare score a.k.a the weighted difference 
     between the two variables */
-    let addScore = 0;
+    addScore = 0;
 
     /* here we are setting addScore to the absolute difference between the fields
     multiplied by the weighting I have chosen  */
     addScore = Math.abs((team1FIELD - team2FIELD)*weight)
 
-    //console.log(addScore + " This is the addScore");
 
     
     if (team1FIELD === team2FIELD) {
     //do nothing
     }
     else {
-
-        if (team1FIELD > team2FIELD) {
-           team1SCORE = team1SCORE + addScore;
-        }
-        else {
-            team2SCORE = team2SCORE + addScore;
-        }
+        //refer to the compareScore function here, we use this here so I can 
+        // differentiate between some specific fields
+        compareScore(team1FIELD,team2FIELD,field)
 }
 
 
 }
+//This is the compare rank function, 
 function compareRANK(field) {
-    let team1FIELD = team1RANKS[field];
-    let team2FIELD = team2RANKS[field];
-    let weight = fieldWeights[field + "Rank"]*20;
+    
+    //Initiliasing rankField 
+    let rankField = "";
+
+    //Cutting off the word "Rank" from the end of the word
+    rankField = field.slice(0,-4);
+
+    //This if statement is a bugfix here, the reason being 
+    // the actual JSON object has 2 fields which do not have the same naming convention
+    // as the rest of the fields in the JSON so we need to do some tiny bit of manipulating 
+    // so our algorithm runs smoothly.
+    if (rankField === 'savePct' || 'shootingPct')
+    {
+        if (rankField === 'savePct') {
+            rankField = 'savePctRank'
+        }
+        else if (rankField === 'shootingPct') {
+            rankField = 'shootingPctRank'
+        }
+    }
+   
+    //Setting team1FIELD and team2FIELD to the corresponding variable in the RANKS objects
+    let team1FIELD = team1RANKS[rankField];
+    let team2FIELD = team2RANKS[rankField];
+
+    //We do this for the weight as well
+    let weight = fieldWeights[rankField];
+
+    //Extract is initilised here because we end up getting back postfixes such as 
+    // "st" and "th" on the end of words 
     let extract1 = 0;
     let extract2 = 0;
-    
-    //EXTRACTING//
-    extract1 = Number(team1FIELD.slice(0,-2));
-    // console.log(extract1);
-    extract2 = Number(team2FIELD.slice(0,-2));
-    // console.log(extract2);
-    //EXTRACTING// 
 
-    let addScore = 0;
+    
+    //Here we just slice off the postfixes and then change it from a string to a number
+    extract1 = Number(team1FIELD.slice(0,-2));
+   
+    extract2 = Number(team2FIELD.slice(0,-2));
+    
+    //Resetting addScore
+    addScore = 0;
+
+    //Setting addScore to the absolute difference between the two fields, then multipling
+    // the difference by the weights 
     addScore = Math.abs((extract1 - extract2)*weight)
     if (extract1 === extract2) {
         //do nothing
         }
         else {
-    
-            if (extract1 > extract2) {
+            
+            //Here we add addScore on the the team which ended up having the greater field
+            if (extract1 < extract2) {
                team1SCORE = team1SCORE + addScore;
             }
             else {
@@ -285,6 +324,29 @@ function compareRANK(field) {
 
 
     
+}
+
+//This whole compareScore function adds the addScore to which ever field is "better"
+function compareScore(score1,score2,field) {
+
+    /* Here we are checking for fields which we need to switch the test from "is greater than"
+    to "is less than", we do this here because having more losses is not good */
+    if (field === "losses" || "goalsAgaisntPerGame" || "powerPlayGoalsAgaisnt" || "shotsAllowed") {
+        if (score1 < score2) {
+            team1SCORE = team1SCORE + addScore;
+        }
+        else {
+            team2SCORE = team2SCORE + addScore;
+        }
+    }
+    else {
+        if (score1 > score2) {
+            team1SCORE = team1SCORE + addScore;
+         }
+         else {
+             team2SCORE = team2SCORE + addScore;
+         }
+    }
 }
 function predict() {
     //Assigning t1 and t2 which are the values of the select boxes, this is so we can do some
@@ -300,44 +362,67 @@ function predict() {
 
     //Here is where the real "Predicting" is about to take place
     else {
+
+        //Resetting the team scores to 0
         team1SCORE = 0;
         team2SCORE = 0;
     
 
-    console.log(team1NAME);
-    console.log(team2NAME);
-
-    // compare(team1STATS.wins,team2STATS.wins,fieldWeights.wins);
-    //compare('wins');
-    // compareRANK('wins');
-
+   //Getting a loop to go through all the attributes in field weights
+   
     for (let stat in fieldWeights) {
-        console.log(stat);
-        compare(stat);
+        // "stat" is the field that is being fed through
+    
+
+
+        /* Here we check if the field is a "Rank" field or a normal field, then we run the 
+         corresponding function for it */
+        if (stat.slice(-4) === "Rank")
+        {
+            compareRANK(stat);
+        }
+        else {
+            compare(stat);
+        }
+    
+       
     }
 
-console.log(team1SCORE)
-console.log(team2SCORE)
+
+
+
+//Here we commence the calculating of Win Percent for either teams, then displaying the text
 
 let totalSCORE = 0;
+
+//Creating the Total Score
 totalSCORE =  team1SCORE + team2SCORE;
 
+    
     let team1WP = 0;
-    team1WP = ((team1SCORE/totalSCORE)*100)
-    console.log(team1WP);
+
+    /* Win Percent is made by finding out what percent the score is of the totalScore also 
+    using "toFixed" to round it off to 1 d.p */
+    team1WP = ((team1SCORE/totalSCORE)*100).toFixed(1)
+
+    //Using span so we can edit the look of how the win percent is displayed
     output1.innerHTML = '<span id= "team1WPtext" class= "team1WP"> <span>'
-    team1WPtext.innerHTML = team1WP;
 
+    //Now editing the actual <span>
+    team1WPtext.innerHTML = team1WP + "%";
 
+    //Doing the same process for team2
     let team2WP = 0;
-    team2WP = ((team2SCORE/totalSCORE)*100)
+    team2WP = ((team2SCORE/totalSCORE)*100).toFixed(1)
     console.log("Team 2 Win");
     console.log(team2WP);
-    output2.innerHTML = '<span id= "team2WPtext" class= "team1WP"> <span>'
-    team2WPtext.innerHTML = team2WP;
+    output2.innerHTML = '<span id= "team2WPtext" class= "team2WP"> <span>'
+    team2WPtext.innerHTML = team2WP + "%";
 
-console.log(team1SCORE)
-console.log(team2SCORE)
+    if (team1WP > team2WP) {
+
+}
+
     }
 
 }

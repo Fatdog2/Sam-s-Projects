@@ -145,6 +145,8 @@ button.button1:hover {
     text-align:    center;
     text-shadow:   none;
 }
+/* This is a bugfix here to stop this irratating blue outline staying after the button
+ has been pressed */
 button.button1:focus {
     outline:0;
 }
@@ -171,6 +173,29 @@ button.button1:focus {
 
 }
 
+.team2WP {
+    position: fixed;
+    right: 19%;
+    top: 50%;
+    font-family: Courier;
+    font-size: 400%
+}
  
+.team1WP {
+    position: fixed;
+    left: 20%;
+    top: 50%;
+    font-family: Courier;
+    font-size: 400%
+}
+ 
+
+.matchupText {
+    position: fixed;
+    left: 40%;
+    top: 70%;
+    text-align: center;
+}
+  
   
  
