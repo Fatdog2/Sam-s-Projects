@@ -1,4 +1,4 @@
-//intialising the teams array
+//intialising the teams array as a global (for use in getTeams and both dropDowns)
 let teams = [];
 
 //Initialising team id's as globals, we do this here because we need to use the team id's in
@@ -6,64 +6,75 @@ let teams = [];
 let teamid1 = 0;
 let teamid2 = 0;
 
-//Here are my own personal weighting for each field, supposedly how much I think they mean
-// towards for example, wins should weigh more than power play goals agiasnt. 
-//I have taken alot of thought into these weighting however, in the near future I might like
-// to enable the user to edit the weightings of the variables just for personal preference
-let fieldWeights = {
+/* Here are my own personal weighting for each field, supposedly how much I think they mean
+ towards for example, wins should weigh more than power play goals agiasnt. 
+ I have taken alot of thought into these weighting however, in the near future I might like
+ to enable the user to edit the weightings of the variables just for personal preference */
 
-     wins: 25,
-     winsRank: 30,
-     losses: 20,
-     lossesRank: 25,
-     ot: 6,
-     otRank: 8,
-     pts: 8,
-     ptsRank: 10,
-     goalsPerGame: 5,
-     goalsPerGameRank: 7,
-     goalsAgainstPerGame: 5,
-     goalsAgainstPerGameRank: 7,
-     evGGARatio: 3,
-     evGGARatioRank: 4,
-     powerPlayPercentage: 4,
-     powerPlayPercentageRank: 5,
-     powerPlayGoals: 3,
-     powerPlayGoalsRank: 4,
-     powerPlayGoalsAgainst:	3,
-     powerPlayGoalsAgainstRank:	4,
-     powerPlayOpportunities: 2,
-     powerPlayOpportunitiesRank: 3,
-     penaltyKillOpportunities:	2.5,
-     penaltyKillOpportunitiesRank:	3.5,
-     penaltyKillPercentage:	4,
-     penaltyKillPercentageRank:	5,
-     shotsPerGame: 4.5,
-     shotsPerGameRank: 5.5,
-     shotsAllowed:	4.5,
-     shotsAllowedRank:	4.5,
-     winScoreFirst:	2,
-     winScoreFirstRank:	2.5,
-     winOppScoreFirst:	2.5,
-     winOppScoreFirstRank:  3,
-     winLeadFirstPer:	1.8,
-     winLeadFirstPerRank:   2.2,
-     winLeadSecondPer:	1.6,
-     winLeadSecondPerRank:	2,
-     winOutshootOpp:	2,
-     winOutshootOppRank:	2.5,
-     winOutshotByOpp:	3,
-     winOutshotByOppRank:	3.5,
-     winOutshotByOpp:	3.5,
-     winOutshotByOppRank:	4,
-     faceOffWinPercentage: 3,
-     faceOffWinPercentageRank: 3,	
-     savePctg:	4.5,
-     savePctRank:	5,
-     shootingPct: 4.5,
-     shootingPctRank: 5,
+ let fieldWeights = {};
+ // let fieldWeights = {
+
+//      wins: 25,
+//      winsRank: 30,
+//      losses: 20,
+//      lossesRank: 25,
+//      ot: 6,
+//      otRank: 8,
+//      pts: 8,
+//      ptsRank: 10,
+//      goalsPerGame: 5,
+//      goalsPerGameRank: 7,
+//      goalsAgainstPerGame: 5,
+//      goalsAgainstPerGameRank: 7,
+//      evGGARatio: 3,
+//      evGGARatioRank: 4,
+//      powerPlayPercentage: 4,
+//      powerPlayPercentageRank: 5,
+//      powerPlayGoals: 3,
+//      powerPlayGoalsRank: 4,
+//      powerPlayGoalsAgainst:	3,
+//      powerPlayGoalsAgainstRank:	4,
+//      powerPlayOpportunities: 2,
+//      powerPlayOpportunitiesRank: 3,
+//      penaltyKillOpportunities:	2.5,
+//      penaltyKillOpportunitiesRank:	3.5,
+//      penaltyKillPercentage:	4,
+//      penaltyKillPercentageRank:	5,
+//      shotsPerGame: 4.5,
+//      shotsPerGameRank: 5.5,
+//      shotsAllowed:	4.5,
+//      shotsAllowedRank:	4.5,
+//      winScoreFirst:	2,
+//      winScoreFirstRank:	2.5,
+//      winOppScoreFirst:	2.5,
+//      winOppScoreFirstRank:  3,
+//      winLeadFirstPer:	1.8,
+//      winLeadFirstPerRank:   2.2,
+//      winLeadSecondPer:	1.6,
+//      winLeadSecondPerRank:	2,
+//      winOutshootOpp:	2,
+//      winOutshootOppRank:	2.5,
+//      winOutshotByOpp:	3,
+//      winOutshotByOppRank:	3.5,
+//      winOutshotByOpp:	3.5,
+//      winOutshotByOppRank:	4,
+//      faceOffWinPercentage: 3,
+//      faceOffWinPercentageRank: 3,	
+//      savePctg:	4.5,
+//      savePctRank:	5,
+//      shootingPct: 4.5,
+//      shootingPctRank: 5,
      
-}
+// }
+
+let database = firebase.database();
+
+let fieldWRef = database.ref('/fieldWeights');
+
+fieldWRef.once('value').then((data) => {fieldWeights = data.val();});
+
+// fieldWRef.update(fieldWeights);
+
 
 
 
@@ -75,14 +86,28 @@ let team2STATS = [];
 
 //Setting up some more globals that we need to use in different functions (therefore requring
 //  making them globals)
+
+//These are the 2 names we get from the dropDown function and use them later on when we write  message
 let team1NAME = "";
 let team2NAME = "";
 
+//The ranks we get from the dropDown function and use in the compareRank function
 let team1RANKS = [];
 let team2RANKS = [];
 
+//These team scores are used in the 'predicting' win percents
 let team1SCORE = 0;
 let team2SCORE = 0;
+
+//This is a global flag. I am doing this so the dropDowns know what is going on.
+let predictHasRun = false;
+
+//These two flags are here so if the user tries to run predict before stats have been retrieved
+// it does not bug out the program, and instead provides an error message
+let team1StatsDONE = false;
+let team2StatsDONE = false;
+
+
 
 //calling the getTeams function so you don't have to wait for a dropdown box to be clicked for the options to load into the select boxes
 getTeams();
@@ -134,6 +159,9 @@ function getTeams() {
 //This function is to be called everytime the dropdown box has its value changed.
 function dropDownChange1() {
 
+    //Setting this to false here because if the user tries to click predict before stats have been retrieved I can deny predict
+    team1StatsDONE = false;
+
 //x here is the value that is in team select select list, in mine it corresponds to team id so we can use it here to find mutiple things, such as API request and picture. 
     teamid1 = document.getElementById("teamSelect1").value;
     //Checking if the value is actually a number (so I know whether someone has actually chosen a team)
@@ -174,10 +202,18 @@ function dropDownChange1() {
              team1STATS.goalsAgainstPerGame + "<br>" + '<span class="output1LABELS">Total Pts: </span>' +  
              team1STATS.pts + "<br>";
 
-
+            if (predictHasRun === true) {
+                dropDownChange2();
+                predictHasRun = false;
+                matchupText.innerHTML = "";
+                
+            }
+            
+            //Setting the flag back to true, now that stats have been completely retrieved
+            team1StatsDONE = true;
         }
     }}
-    //The outcome if we do not have a team chosen
+    //The outcome if we do not have a team chosen, is hiding the picture and switching to default text
     else {
         output1.innerHTML = "Please Select Team 1";
         team1IMG.hidden = true;
@@ -188,10 +224,13 @@ function dropDownChange1() {
 
 //Here we repeat the same process of events that occured in our dropDownChange1
 function dropDownChange2() {
+
+    team2StatsDONE = false;
+
     teamid2 = document.getElementById("teamSelect2").value;
     if (!isNaN(teamid2))
     {
-       output2.innerHTML = "Team ID: " + teamid2;
+         output2.innerHTML = "Team ID: " + teamid2;
         team2IMG.src = "/Images/" + teamid2 + ".png";
         team2IMG.hidden = false;
         output2.innerHTML = "";
@@ -211,6 +250,16 @@ function dropDownChange2() {
                 team2STATS.goalsPerGame + "<br>" + '<span class="output2LABELS">Goals Agaisnt Per Game: </span>' + 
                 team2STATS.goalsAgainstPerGame + "<br>" + '<span class="output2LABELS">Total Pts: </span>' +  
                 team2STATS.pts + "<br>";
+
+               
+
+                if (predictHasRun === true) {
+                    dropDownChange1();
+                    predictHasRun = false;
+                    matchupText.innerHTML = "";
+                    
+                }
+            team2StatsDONE = true;
             }
         }
     }
@@ -349,6 +398,24 @@ function compareScore(score1,score2,field) {
     }
 }
 function predict() {
+    if ((team1StatsDONE === false) || (team2StatsDONE === false)) {
+   
+    let t1 = document.getElementById("teamSelect1").value;
+    let t2 = document.getElementById("teamSelect2").value;
+
+    //Here some data validation checking if the user has chosen two teams
+    //Also makes sure the teams are not the same 
+    if ((t1 === "noTeam" || t2 === "noTeam") || (t1 === t2)) {
+        alert("Please Select Two Different Teams");
+    }
+    else {
+        alert("Both stats need to be retrieved first, not everythings instant.")
+    }
+
+    }
+
+    else {
+    
     //Assigning t1 and t2 which are the values of the select boxes, this is so we can do some
     // data validation
     let t1 = document.getElementById("teamSelect1").value;
@@ -414,15 +481,28 @@ totalSCORE =  team1SCORE + team2SCORE;
     //Doing the same process for team2
     let team2WP = 0;
     team2WP = ((team2SCORE/totalSCORE)*100).toFixed(1)
-    console.log("Team 2 Win");
-    console.log(team2WP);
     output2.innerHTML = '<span id= "team2WPtext" class= "team2WP"> <span>'
     team2WPtext.innerHTML = team2WP + "%";
 
+    //Here we change the colours of the win percents according to who has the higher one
+    //Doing this witht he JQuery "addClass" and "removeClass" functions which just add and remove the colours
     if (team1WP > team2WP) {
-
-}
-
+        $(team1WPtext).removeClass("loseColour");
+        $(team2WPtext).removeClass("winColour");
+        matchupText.innerHTML = team1NAME + " are " + (team1WP/team2WP).toFixed(2) + " times more likely to win than the " + team2NAME;
+        $(team1WPtext).addClass("winColour");
+        $(team2WPtext).addClass("loseColour");
+    }   
+    else {
+        $(team1WPtext).removeClass("winColour");
+        $(team2WPtext).removeClass("loseColour");
+        matchupText.innerHTML = team2NAME + " are " + (team2WP/team1WP).toFixed(2) + " times more likely to win than the " + team1NAME;
+        $(team1WPtext).addClass("loseColour");
+        $(team2WPtext).addClass("winColour");
+    }
+    //The predict flag setting to true
+   predictHasRun = true;
     }
 
+    }
 }

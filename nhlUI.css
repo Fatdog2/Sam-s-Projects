@@ -114,7 +114,6 @@ div.output2 {
     font-family: "Comic Sans", Courier, monospace;
 
 }
-
 /* Formatting the button  */
 button.button1 {
     position: fixed;
@@ -145,6 +144,8 @@ button.button1:hover {
     text-align:    center;
     text-shadow:   none;
 }
+
+
 /* This is a bugfix here to stop this irratating blue outline staying after the button
  has been pressed */
 button.button1:focus {
@@ -172,7 +173,7 @@ button.button1:focus {
     font-family: Courier;
 
 }
-
+/* formatting the Win Percent */
 .team2WP {
     position: fixed;
     right: 19%;
@@ -180,7 +181,8 @@ button.button1:focus {
     font-family: Courier;
     font-size: 400%
 }
- 
+
+/* formatting the Win Percent */
 .team1WP {
     position: fixed;
     left: 20%;
@@ -189,13 +191,26 @@ button.button1:focus {
     font-size: 400%
 }
  
-
+/* formatting the Match Up text */
 .matchupText {
     position: fixed;
-    left: 40%;
-    top: 70%;
+    left: 23%;
+    top: 80%;
     text-align: center;
+    font-size: 130%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+
+}
+
+/* These are just the classes that I add/remove to change the colour of win percents */
+.winColour {
+    color: #06e80e;
+}
+.loseColour {
+    color: red;
 }
   
+
   
  

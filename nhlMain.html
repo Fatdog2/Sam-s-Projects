@@ -3,7 +3,28 @@
     <head>
         <! linking the CSS and the JS >
         <link rel="stylesheet" href="nhlUI.css">
+        
+
+        <! JQuery libary >
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+       
+        <! Connecting Firebase >
+        <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDhYTtuMbuJSdHyiK8cxVuKpVmZqKCvlNI",
+    authDomain: "nhl-game-predictor.firebaseapp.com",
+    databaseURL: "https://nhl-game-predictor.firebaseio.com",
+    projectId: "nhl-game-predictor",
+    storageBucket: "nhl-game-predictor.appspot.com",
+    messagingSenderId: "1085646017174"
+  };
+  firebase.initializeApp(config);
+</script>
         <script src="nhlMain.js"></script>
+        
+
 
   
 
@@ -26,19 +47,19 @@
         <select class= "teamSelect2" onchange="dropDownChange2()" id="teamSelect2">      
             </select>
             <! Setting up button >    
-            <button class="button1" onclick="predict()">Predict</button>
+            <button class="button1","pulse" onclick="predict()">Predict</button>
             <! Setting up the text for underneath the first select box, it 
                 initialises with the "Please Select" Text >
         <div class="output1" id="output1">Please Select Team 1</div>
         <! Setting up the text for undernearth the second select box,
             have used a span here unlike the first one, so I can reposition
             the text independently in the CSS  >
-        <div class="output2" id="output2"><span class= "pleaseSelect2" > Please Select Team 2 </span>'</div>
+        <div class="output2" id="output2"><span class= "pleaseSelect2" > Please Select Team 2 </span></div>
 
-        <div class="matchupText">  placeholder </div>
+        <div id="matchupText" class="matchupText">  </div>
 
         
   
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     </body>
 </html>
