@@ -60,7 +60,7 @@ mouse is hovered over the top */
 select.teamSelect1:hover {
     border-color: grey;
     color: white;
-    background: black url(/Images/inverse\ drop\ down.png) no-repeat 90%;
+    background: black url(Images/inverse\ drop\ down.png) no-repeat 90%;
     background-size: 15%;
 
 
@@ -94,7 +94,7 @@ select.teamSelect2 {
     border-radius: 30px;
     border-width: 3px;
     border-color: black;
-    background: url(/Images/actual\ drop\ down.png) no-repeat 90%;
+    background: url(Images/actual\ drop\ down.png) no-repeat 90%;
     background-size: 15%;
 
 
