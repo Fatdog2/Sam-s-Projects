@@ -169,7 +169,7 @@ function dropDownChange1() {
     {
         //Changing the picture to the according team, as well as setting up output
         output1.innerHTML = "";
-        team1IMG.src = "/Images/" + teamid1 + ".png";
+        team1IMG.src = "Images/" + teamid1 + ".png";
         team1IMG.hidden = false;
         
 
@@ -231,7 +231,7 @@ function dropDownChange2() {
     if (!isNaN(teamid2))
     {
          output2.innerHTML = "Team ID: " + teamid2;
-        team2IMG.src = "/Images/" + teamid2 + ".png";
+        team2IMG.src = "Images/" + teamid2 + ".png";
         team2IMG.hidden = false;
         output2.innerHTML = "";
         let xhttp = new XMLHttpRequest();
